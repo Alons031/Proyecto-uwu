@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
+
 package proyecto;
 
 /**
@@ -19,6 +16,9 @@ public class Proyecto {
         /// LISTO PRUEBA 1
         /// uwu 676767
         //Alono uwu
+        //UWU
+        //Alonso lo hizo
+        //nooooo me sale
     }
     
 }
