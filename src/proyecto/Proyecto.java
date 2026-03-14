@@ -14,8 +14,7 @@ public class Proyecto {
         // TODO code application logic here
         System.out.println("uwu");
         /// LISTO PRUEBA 1
-        /// uwu 676767
-        
+        //123
     }
     
 }
