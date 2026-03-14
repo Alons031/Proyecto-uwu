@@ -16,7 +16,10 @@ public class Proyecto {
         /// LISTO PRUEBA 1
         /// uwu 676767
         //Alono uwu
-      
+        //UWU
+        //Alonso lo hizo
+        //nooooo me sale
+        //unu
     }
     
 }
