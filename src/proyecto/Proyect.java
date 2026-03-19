@@ -34,6 +34,7 @@ import javax.swing.event.ListSelectionListener;
  *      Reyes Perez Jose Eduardo
  */
 public class Proyect extends javax.swing.JFrame {
+    Opciones_Avanzadas abrir = new Opciones_Avanzadas();
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Proyect.class.getName());
     
@@ -411,7 +412,7 @@ public class Proyect extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Opciones_Avanzadas abrir = new Opciones_Avanzadas();
+        
         abrir.setVisible(true);  
     }//GEN-LAST:event_jButton1ActionPerformed
 
