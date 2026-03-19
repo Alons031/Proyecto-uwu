@@ -5,6 +5,7 @@
 package proyecto;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -26,8 +27,10 @@ public class Opciones_Avanzadas extends javax.swing.JFrame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(jRadioButton1.isSelected()){
+                    
                     jLabel1.setText("Activo");
                     jLabel1.setForeground(Color.green);
+                    jLabel1.setFont(new Font("Arial",Font.BOLD,14));
                     
                 }else{
                     jLabel1.setText("Inactivo");
@@ -42,6 +45,7 @@ public class Opciones_Avanzadas extends javax.swing.JFrame {
                 if(jRadioButton2.isSelected()){
                     jLabel2.setText("Activo");
                     jLabel2.setForeground(Color.green);
+                    jLabel2.setFont(new Font("Arial",Font.BOLD,14));
                     
                 }else{
                     jLabel2.setText("Inactivo");
@@ -56,6 +60,7 @@ public class Opciones_Avanzadas extends javax.swing.JFrame {
                 if(jRadioButton3.isSelected()){
                     jLabel3.setText("Activo");
                     jLabel3.setForeground(Color.green);
+                    jLabel3.setFont(new Font("Arial",Font.BOLD,14));
                     
                 }else{
                     jLabel3.setText("Inactivo");
@@ -89,17 +94,25 @@ public class Opciones_Avanzadas extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(102, 102, 102));
 
         jRadioButton1.setText("Sensor mejorado");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
 
         jRadioButton2.setText("Vision nocturna");
 
         jRadioButton3.setText("X");
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setText("Inactivo");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setText("Inactivo");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 0, 0));
         jLabel3.setText("Inactivo");
 
@@ -156,7 +169,7 @@ public class Opciones_Avanzadas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -177,9 +190,13 @@ public class Opciones_Avanzadas extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Proyect abrir = new Proyect();
         this.setVisible(false);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     /**
      * @param args the command line arguments
