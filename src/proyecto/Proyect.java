@@ -73,8 +73,8 @@ public class Proyect extends javax.swing.JFrame {
 
         ////        cartas de las zonas para el panel        ////
         jPanel3.add(PanelPatio(), "Patio");
-        //jPanel3.add(PanelSala(), "Sala");
-        //jPanel3.add(PanelComedor(), "Comedor");
+        jPanel3.add(PanelSala(), "Sala");
+        jPanel3.add(PanelComedor(), "Comedor");
     }
     
     /////       Metodo de la lista      /////
