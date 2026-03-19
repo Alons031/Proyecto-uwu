@@ -172,10 +172,71 @@ public class Proyect extends javax.swing.JFrame {
     
     
     // Meotodo del panel sala
-    
+    private JPanel PanelSala() {
+        JPanel panelBase = new JPanel(new BorderLayout());
+        panelBase.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.BLACK), "Sala", 0, 2, new Font("Segoe UI", 1, 18)));
+
+        JPanel panelColumnas = new JPanel(new GridLayout(1, 3, 15, 0));
+        panelColumnas.setBackground(new Color(204, 204, 204));
+        panelColumnas.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        //  Luces Sala
+        JPanel panelLuces = new JPanel(new GridLayout(0, 1));
+        panelLuces.setBackground(new Color(153, 153, 153));
+        panelLuces.setBorder(BorderFactory.createTitledBorder("Luces Sala:"));
+        panelLuces.add(new JCheckBox("Luz Principal"));
+        panelLuces.add(new JCheckBox("Luces led"));
+
+        // 2. tv y sonido
+        JPanel panelExtra = new JPanel(new GridLayout(0, 1));
+        panelExtra.setBackground(new Color(153, 153, 153));
+        panelExtra.setBorder(BorderFactory.createTitledBorder("Multimedia:"));
+        panelExtra.add(new JCheckBox("Smart TV"));
+        panelExtra.add(new JCheckBox("Audio"));
+
+        panelColumnas.add(panelLuces);
+        panelColumnas.add(panelExtra);
+        panelColumnas.add(ColumnaSeguridad());
+
+        panelBase.add(panelColumnas, java.awt.BorderLayout.CENTER);
+        return panelBase;
+    }
     
     /// METODO DEL COMEDOR
-    
+    private javax.swing.JPanel PanelComedor() {
+        JPanel panelBase = new JPanel(new BorderLayout());
+        panelBase.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.BLACK), "Comedor", 0, 2, new Font("Segoe UI", 1, 18)));
+
+        JPanel panelColumnas = new JPanel(new GridLayout(1, 3, 15, 0));
+        panelColumnas.setBackground(new Color(204, 204, 204));
+        panelColumnas.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // 1. Luces Comedor
+        JPanel panelLuces = new JPanel(new GridLayout(0, 1));
+        panelLuces.setBackground(new Color(153, 153, 153));
+        panelLuces.setBorder(BorderFactory.createTitledBorder("Luces Comedor:"));
+        panelLuces.add(new JCheckBox("Lampara de techo"));
+        panelLuces.add(new JCheckBox("Luces de vitirna "));
+
+        // 2. Cortinas
+        JPanel panelCortinas = new JPanel(new GridLayout(0, 1));
+        panelCortinas.setBackground(new Color(153, 153, 153));
+        panelCortinas.setBorder(BorderFactory.createTitledBorder("Cortinas Inteligentes:"));
+        ButtonGroup bgCortinas = new ButtonGroup();
+        JRadioButton rbCerradas = new JRadioButton("Cerradas", true);
+        JRadioButton rbAbiertas = new JRadioButton("Abiertas");
+        bgCortinas.add(rbCerradas); bgCortinas.add(rbAbiertas);
+        panelCortinas.add(rbCerradas); panelCortinas.add(rbAbiertas);
+
+        panelColumnas.add(panelLuces);
+        panelColumnas.add(panelCortinas);
+        panelColumnas.add(ColumnaSeguridad()); // 3. Seguridad
+
+        panelBase.add(panelColumnas, java.awt.BorderLayout.CENTER);
+        return panelBase;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
