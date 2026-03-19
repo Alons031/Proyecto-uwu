@@ -1,28 +1,58 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package proyecto;
-
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
-
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 /**
- *
- * @author lisan
+ * EQUIPO 2:
+ *      Cruz Paz Imanol
+ *      Espino Espino Lisandro
+ *      Gonzalez Garcial Michelle
+ *      Ortega Zarate Alonso
+ *      Reyes Perez Jose Eduardo
  */
 public class Proyect extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Proyect.class.getName());
+    
+    /// Card layout para mostrar solo un panel a la vez   ///
+    private CardLayout cardLayoutCentral;
+    ////        estado de la alarma falso= desactivada  true= activa
+    private boolean seguridad = false;
+    //      cuadros verde y rojo
+    private List<JLabel> indicadorSeguridad = new ArrayList<>();
 
-    /**
-     * Creates new form Proyect
-     */
     public Proyect() {
         initComponents();
+        
+        /// metodos del panel central ///
+        PanelCentral();
+        EventosLista();
+        // metodo del ctrl A
+        AtajoTeclado();
+        
         Timer timer = new Timer(1000, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -33,7 +63,119 @@ public class Proyect extends javax.swing.JFrame {
         });
         timer.start();
     }
+    
+    
+    /////       metodo pra asignar el cardlayout al panel cwntral   /////
+    private void PanelCentral() {
+        cardLayoutCentral = new CardLayout();
+        jPanel3.setLayout(cardLayoutCentral);
 
+        ////        cartas de las zonas para el panel        ////
+        jPanel3.add(PanelPatio(), "Patio");
+        //jPanel3.add(PanelSala(), "Sala");
+        //jPanel3.add(PanelComedor(), "Comedor");
+    }
+    
+    /////       Metodo de la lista      /////
+    private void EventosLista() {
+        jList1.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    String seleccion = jList1.getSelectedValue();
+                    if (seleccion != null && !seleccion.isEmpty()) {
+                        cardLayoutCentral.show(jPanel3, seleccion);
+                    }
+                }
+            }
+        });
+    }
+    
+    /////       METODO DEL CTRL+q       /////
+    private void AtajoTeclado() {
+        // combinación de las teclas CTRL+q
+        KeyStroke ctrlA = KeyStroke.getKeyStroke(
+                KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK
+        );
+        
+        // Lo registramos en la ventana principal
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlA, "toggleSeguridad");
+        getRootPane().getActionMap().put("toggleSeguridad", new AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                // cambiamos el estado si era false ahora es true y viceversa
+                seguridad = !seguridad;
+                
+                // asigna el color rojo si está activad veerde si no.
+                Color colorNuevo = seguridad ? Color.RED : Color.GREEN;
+                
+                // Actualizamos todos los foquitos de todas las habitaciones
+                for (JLabel indicador : indicadorSeguridad) {
+                    indicador.setBackground(colorNuevo);
+                }
+            }
+        });
+    }
+    
+    // --- MÉTODO PARA CREAR LA COLUMNA DE SEGURIDAD EN CADA ZONA---
+    private JPanel ColumnaSeguridad() {
+        JPanel panelSeguridad = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        panelSeguridad.setBackground(new Color(153, 153, 153));
+        panelSeguridad.setBorder(BorderFactory.createTitledBorder("Seguridad (Ctrl + q):"));
+        
+        panelSeguridad.add(new javax.swing.JLabel("Estado:"));
+        
+        // Creamos el foquit 
+        JLabel etiquetaEstado = new JLabel("      "); 
+        etiquetaEstado.setOpaque(true); 
+        etiquetaEstado.setBackground(seguridad ? Color.RED : Color.GREEN);
+        etiquetaEstado.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        
+        
+        indicadorSeguridad.add(etiquetaEstado);
+        
+        panelSeguridad.add(etiquetaEstado);
+        return panelSeguridad;
+    }
+    
+    private JPanel PanelPatio() {
+        JPanel panelBase = new JPanel(new BorderLayout());
+        panelBase.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.BLACK), "Patio", 0, 2, new Font("Segoe UI", 1, 18)));
+
+        JPanel panelColumnas = new JPanel(new GridLayout(1, 3, 15, 0));
+        panelColumnas.setBackground(new Color(204, 204, 204));
+        panelColumnas.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // 1. Luces Exteriores
+        JPanel panelLuces = new JPanel(new GridLayout(0, 1));
+        panelLuces.setBackground(new Color(153, 153, 153));
+        panelLuces.setBorder(BorderFactory.createTitledBorder("Iluminación Exterior:"));
+        panelLuces.add(new JCheckBox("Reflectores (Movimiento)"));
+        panelLuces.add(new JCheckBox("Faroles del Camino"));
+
+        // 2. Riego
+        JPanel panelRiego = new JPanel(new GridLayout(0, 1));
+        panelRiego.setBackground(new Color(153, 153, 153));
+        panelRiego.setBorder(BorderFactory.createTitledBorder("Sistema de Riego:"));
+        panelRiego.add(new JCheckBox("Aspersores Césped"));
+        panelRiego.add(new JCheckBox("Riego por Goteo"));
+
+        panelColumnas.add(panelLuces);
+        panelColumnas.add(panelRiego);
+        panelColumnas.add(ColumnaSeguridad()); // 3. Seguridad
+
+        panelBase.add(panelColumnas, BorderLayout.CENTER);
+        return panelBase;
+    }
+    
+    
+    // Meotodo del panel sala
+    
+    
+    /// METODO DEL COMEDOR
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -74,7 +216,7 @@ public class Proyect extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
@@ -122,7 +264,7 @@ public class Proyect extends javax.swing.JFrame {
         jList1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jList1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Patio", "Comedor", "Sala", " " };
+            String[] strings = { "Patio", "Comedor", "Sala", "" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -270,10 +412,7 @@ public class Proyect extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Opciones_Avanzadas abrir = new Opciones_Avanzadas();
-        abrir.setVisible(true);
-        
-        
-        
+        abrir.setVisible(true);  
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
