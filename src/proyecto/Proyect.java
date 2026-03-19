@@ -203,7 +203,7 @@ public class Proyect extends javax.swing.JFrame {
         return panelBase;
     }
     
-    /// METODO DEL COMEDOR
+    /// MÉTODO DEL COMEDOR
     private javax.swing.JPanel PanelComedor() {
         JPanel panelBase = new JPanel(new BorderLayout());
         panelBase.setBorder(BorderFactory.createTitledBorder(
