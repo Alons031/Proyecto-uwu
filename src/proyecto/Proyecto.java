@@ -19,7 +19,8 @@ public class Proyecto {
             ventana.setLocationRelativeTo(null);
             ventana.setResizable(true); 
         });
-         
+        
+        
     }
     
 }
