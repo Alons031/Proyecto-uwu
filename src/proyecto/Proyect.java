@@ -249,7 +249,7 @@ public class Proyect extends javax.swing.JFrame {
         panelLuces.setBackground(new Color(153, 153, 153));
         panelLuces.setBorder(BorderFactory.createTitledBorder("Luces Comedor:"));
         panelLuces.add(new JCheckBox("Lampara de techo"));
-        panelLuces.add(new JCheckBox("Luces de vitirna "));
+        panelLuces.add(new JCheckBox("Luces de vitrina "));
 
         // 2. Cortinas
         JPanel panelCortinas = new JPanel(new GridLayout(0, 1));
