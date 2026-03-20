@@ -19,6 +19,7 @@ public class Opciones_Avanzadas extends javax.swing.JFrame {
      */
     public Opciones_Avanzadas() {
         initComponents();
+        this.setLocationRelativeTo(null);
         
         jRadioButton1.addItemListener(new ItemListener(){
             @Override
