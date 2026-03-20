@@ -47,6 +47,9 @@ public class Proyect extends javax.swing.JFrame {
     private List<JLabel> indicadorSeguridad = new ArrayList<>();
 
     private String password;
+    
+    private Capturas panelCapturas = new Capturas();
+    private boolean viendoCaptura = false;
 
     public Proyect(String password) {
         this.password = password;
@@ -95,6 +98,8 @@ public class Proyect extends javax.swing.JFrame {
         jPanel3.add(PanelPatio(), "Patio");
         jPanel3.add(PanelSala(), "Sala");
         jPanel3.add(PanelComedor(), "Comedor");
+        
+        jPanel3.add(panelCapturas, "VistaCaptura");
     }
     
     /////       Metodo de la lista      /////
@@ -418,7 +423,7 @@ public class Proyect extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButton2.setBackground(new java.awt.Color(153, 153, 153));
-        jButton2.setText("jButton2");
+        jButton2.setText("Capturas");
         jButton2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -436,7 +441,7 @@ public class Proyect extends javax.swing.JFrame {
         });
 
         jButton3.setBackground(new java.awt.Color(153, 153, 153));
-        jButton3.setText("jButton3");
+        jButton3.setText("Cerrar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -515,12 +520,35 @@ public class Proyect extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (verificarAcceso()){
+            String seleccion = jList1.getSelectedValue();
+            if (seleccion == null || seleccion.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecciona una zona primero.");
+            return;
+        }
+
+        if (!viendoCaptura) {
+            // Le mandamos la zona y el tamaño a nuestra nueva clase
+            panelCapturas.mostrarCaptura(seleccion, jPanel3.getWidth(), jPanel3.getHeight());
+            
+            // Mostramos la carta
+            cardLayoutCentral.show(jPanel3, "VistaCaptura");
+            jButton2.setText("Volver");
+            viendoCaptura = true;
+            
+        } else {
+            // Regresar a la vista normal
+            cardLayoutCentral.show(jPanel3, seleccion);
+            jButton2.setText("Capturas");
+            viendoCaptura = false;
+        }
         
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if(verificarAcceso()){
+            System.exit(0);
+            
         
         }
     }//GEN-LAST:event_jButton3ActionPerformed
