@@ -2,19 +2,24 @@
 
 package proyecto;
 
-/**
- *
- * @author alono
- */
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
+
 public class Proyecto {
 
-    /**
-     * @param args the command line arguments
-     */
+   
     public static void main(String[] args) {
-        // TODO code application logic here
-        System.out.println("hola");
-        //Alonso , joseloll, Michell
+      
+        SwingUtilities.invokeLater(()->{
+            Ventana ventana = new Ventana ();
+            ventana.setVisible(true);
+            ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            ventana.setSize(600,400);
+            ventana.setLocationRelativeTo(null);
+            ventana.setResizable(true); 
+        });
+        
         
     }
     

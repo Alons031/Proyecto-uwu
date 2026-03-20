@@ -19,6 +19,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.KeyStroke;
@@ -45,9 +46,11 @@ public class Proyect extends javax.swing.JFrame {
     //      cuadros verde y rojo
     private List<JLabel> indicadorSeguridad = new ArrayList<>();
 
-    public Proyect() {
+    private String password;
+
+    public Proyect(String password) {
+        this.password = password;
         initComponents();
-        
         /// metodos del panel central ///
         PanelCentral();
         EventosLista();
@@ -60,10 +63,27 @@ public class Proyect extends javax.swing.JFrame {
                 String horaActual = new SimpleDateFormat("HH:mm:ss").format(new Date());
                 jLabel3.setText(horaActual);
             }
-        
         });
         timer.start();
     }
+    
+    
+    private boolean verificarAcceso(){
+  
+    String pass = JOptionPane.showInputDialog("Ingresa la contraseña:");
+
+    if (pass == null) return false;
+
+    if (pass.equals(password)) {
+        return true;
+    } else {
+        JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
+        return false;
+        }
+    
+    }
+    
+
     
     
     /////       metodo pra asignar el cardlayout al panel cwntral   /////
@@ -138,6 +158,10 @@ public class Proyect extends javax.swing.JFrame {
         panelSeguridad.add(etiquetaEstado);
         return panelSeguridad;
     }
+    
+    
+    
+    
     
     private JPanel PanelPatio() {
         JPanel panelBase = new JPanel(new BorderLayout());
@@ -396,6 +420,11 @@ public class Proyect extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(153, 153, 153));
         jButton2.setText("jButton2");
         jButton2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(153, 153, 153));
         jButton1.setText("Opciones Avanzadas");
@@ -408,6 +437,11 @@ public class Proyect extends javax.swing.JFrame {
 
         jButton3.setBackground(new java.awt.Color(153, 153, 153));
         jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -473,34 +507,30 @@ public class Proyect extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        abrir.setVisible(true);  
+        if (verificarAcceso()){
+        abrir.setVisible(true); 
+        }
+         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (verificarAcceso()){
+        
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if(verificarAcceso()){
+        
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    
+    
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Proyect().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
