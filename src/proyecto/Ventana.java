@@ -26,7 +26,7 @@ public class Ventana extends JFrame {
 
    JPanel panel = new JPanel();
   
-   panel.setLayout(new GridLayout(4, 1));
+   panel.setLayout(new GridLayout(4,1));
     panel.setBackground(Color.BLACK);
     
         JLabel titulo = new JLabel("BIENVENIDO");
@@ -37,24 +37,18 @@ public class Ventana extends JFrame {
 
         JPanel panelUsuario = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelUsuario.setBackground(Color.black);
-
         JLabel usuario = new JLabel("Usuario:");
         usuario.setForeground(Color.WHITE);
-
         JTextField txtUsuario = new JTextField(12); 
-
         panelUsuario.add(usuario);
         panelUsuario.add(txtUsuario);
 
 
         JPanel panelContraseña = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelContraseña.setBackground(Color.black);
-
         JLabel contraseña = new JLabel("Contraseña:");
         contraseña.setForeground(Color.WHITE);
-
         JPasswordField txtContraseña = new JPasswordField(12);
-
         panelContraseña.add(contraseña);
         panelContraseña.add(txtContraseña);
 
@@ -74,19 +68,22 @@ public class Ventana extends JFrame {
     public void actionPerformed(ActionEvent e) {
 
         String pass = new String(txtContraseña.getPassword());
-
-        if (passwordGuardada == null) {
+        String user = new String(txtUsuario.getText());
+        
+        if(user.isEmpty()&& pass.isEmpty()){
+        JOptionPane.showMessageDialog(null,"Llenar ambos campos!");
+        return;
+        }else if (pass.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Llenar campo de contraseña!");
+            return;
+        } else if(user.isEmpty()){
+            JOptionPane.showMessageDialog(null,"Llenar campo de usuario!");
+            return;
+        }
             passwordGuardada = pass;
             JOptionPane.showMessageDialog(null, "Contraseña guardada");
-            abrirProyecto();
-        } else {
-            if (pass.equals(passwordGuardada)) {
-                abrirProyecto();
-            } else {
-                JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
-            }
-        }
-    }        
+            abrirProyecto();    
+            }        
         });
 
         add(panel);
