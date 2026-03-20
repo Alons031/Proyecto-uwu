@@ -63,33 +63,37 @@ public class Ventana extends JFrame {
         panel.add(panelContraseña);
 
         JButton btnIngresar = new JButton("Entrar");
-        JPanel panelBoton = new JPanel (new FlowLayout(FlowLayout.CENTER));
+        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelBoton.setBackground(Color.lightGray);
         btnIngresar.setPreferredSize(new Dimension(120,30));
         panelBoton.add(btnIngresar);
         panel.add(panelBoton);
 
         btnIngresar.addActionListener(new ActionListener() {
-         @Override
-    public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-        String pass = new String(txtContraseña.getPassword());
+                String pass = new String(txtContraseña.getPassword());
+                String user = new String(txtUsuario.getText());
 
-        if (passwordGuardada == null) {
-            passwordGuardada = pass;
-            JOptionPane.showMessageDialog(null, "Contraseña guardada");
-            abrirProyecto();
-        } else {
-            if (pass.equals(passwordGuardada)) {
+                if(user.isEmpty() && pass.isEmpty()){
+                    JOptionPane.showMessageDialog(null,"Llenar ambos campos!");
+                    return;
+                }else if (pass.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Llenar campo de contraseña!");
+                    return;
+                } else if(user.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Llenar campo de usuario!");
+                    return;
+                }
+
+                passwordGuardada = pass;
+                JOptionPane.showMessageDialog(null, "Contraseña guardada");
                 abrirProyecto();
-            } else {
-                JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
             }
-        }
-    }        
-        });
 
-        add(panel);
+        });
+        add(panel); 
     }
 
     private void abrirProyecto() {
