@@ -54,6 +54,8 @@ public class Proyect extends javax.swing.JFrame {
     public Proyect(String password) {
         this.password = password;
         initComponents();
+        
+        this.setLocationRelativeTo(null);
         /// metodos del panel central ///
         PanelCentral();
         EventosLista();
