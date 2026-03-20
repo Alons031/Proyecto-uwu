@@ -543,6 +543,7 @@ public class Proyect extends javax.swing.JFrame {
             viendoCaptura = false;
         }
         
+        
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
