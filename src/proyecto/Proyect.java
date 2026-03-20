@@ -528,6 +528,7 @@ public class Proyect extends javax.swing.JFrame {
 
         if (!viendoCaptura) {
             // Le mandamos la zona y el tamaño a nuestra nueva clase
+            
             panelCapturas.mostrarCaptura(seleccion, jPanel3.getWidth(), jPanel3.getHeight());
             
             // Mostramos la carta
@@ -542,11 +543,12 @@ public class Proyect extends javax.swing.JFrame {
             viendoCaptura = false;
         }
         
+        
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if(verificarAcceso()){
+        {
             System.exit(0);
             
         
