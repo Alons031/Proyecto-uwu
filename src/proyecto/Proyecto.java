@@ -2,7 +2,7 @@
 
 package proyecto;
 
-import javax.swing.JFrame;
+import javax.swing.JFrame; 
 import javax.swing.SwingUtilities;
 
 
@@ -19,8 +19,6 @@ public class Proyecto {
             ventana.setLocationRelativeTo(null);
             ventana.setResizable(true); 
         });
-        
-        
     }
     
 }
