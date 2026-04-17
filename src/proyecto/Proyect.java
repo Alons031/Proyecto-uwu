@@ -1,4 +1,5 @@
 package proyecto;
+import libreria.SimuladorEnergia;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -36,24 +37,25 @@ import javax.swing.event.ListSelectionListener;
  */
 public class Proyect extends javax.swing.JFrame {
     Opciones_Avanzadas abrir = new Opciones_Avanzadas();
-    
+    SimuladorEnergia sim = new SimuladorEnergia(); // Instanciar la librería
+    int consumoActual = 0; // Variable para ir sumando
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Proyect.class.getName());
-    
     /// Card layout para mostrar solo un panel a la vez   ///
     private CardLayout cardLayoutCentral;
     ////        estado de la alarma falso= desactivada  true= activa
     private boolean seguridad = false;
     //      cuadros verde y rojo
     private List<JLabel> indicadorSeguridad = new ArrayList<>();
-
     private String password;
-    
     private Capturas panelCapturas = new Capturas();
     private boolean viendoCaptura = false;
 
     public Proyect(String password) {
         this.password = password;
         initComponents();
+        
+        jLabel6.setText("Consumo: 0 W");
+        jLabel7.setText("Costo Est.: $0.00 MXN");
         
         this.setLocationRelativeTo(null);
         /// metodos del panel central ///
@@ -72,6 +74,13 @@ public class Proyect extends javax.swing.JFrame {
         timer.start();
     }
     
+    private void configurarCheck(JCheckBox check, int watts) {
+        check.addItemListener(e -> {
+            consumoActual += (check.isSelected() ? watts : -watts);
+            actualizarEnergia();
+        });
+    }
+    
     
     private boolean verificarAcceso(){
   
@@ -87,20 +96,14 @@ public class Proyect extends javax.swing.JFrame {
         }
     
     }
-    
-
-    
-    
     /////       metodo pra asignar el cardlayout al panel cwntral   /////
     private void PanelCentral() {
         cardLayoutCentral = new CardLayout();
         jPanel3.setLayout(cardLayoutCentral);
-
         ////        cartas de las zonas para el panel        ////
         jPanel3.add(PanelPatio(), "Patio");
         jPanel3.add(PanelSala(), "Sala");
         jPanel3.add(PanelComedor(), "Comedor");
-        
         jPanel3.add(panelCapturas, "VistaCaptura");
     }
     
@@ -177,25 +180,30 @@ public class Proyect extends javax.swing.JFrame {
 
         JPanel panelColumnas = new JPanel(new GridLayout(1, 3, 15, 0));
         panelColumnas.setBackground(new Color(204, 204, 204));
-        panelColumnas.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // 1. Luces Exteriores
         JPanel panelLuces = new JPanel(new GridLayout(0, 1));
         panelLuces.setBackground(new Color(153, 153, 153));
         panelLuces.setBorder(BorderFactory.createTitledBorder("Iluminación Exterior:"));
-        panelLuces.add(new JCheckBox("Reflectores (Movimiento)"));
-        panelLuces.add(new JCheckBox("Faroles del Camino"));
+        
+        JCheckBox chkReflectores = new JCheckBox("Reflectores (Movimiento)");
+        JCheckBox chkFaroles = new JCheckBox("Faroles del Camino");
+        
+        configurarCheck(chkReflectores, 50);
+        configurarCheck(chkFaroles, 30);
 
-        // 2. Riego
+        panelLuces.add(chkReflectores);
+        panelLuces.add(chkFaroles);
+
         JPanel panelRiego = new JPanel(new GridLayout(0, 1));
         panelRiego.setBackground(new Color(153, 153, 153));
         panelRiego.setBorder(BorderFactory.createTitledBorder("Sistema de Riego:"));
-        panelRiego.add(new JCheckBox("Aspersores Césped"));
-        panelRiego.add(new JCheckBox("Riego por Goteo"));
+        JCheckBox chkAspersores = new JCheckBox("Aspersores Césped");
+        configurarCheck(chkAspersores, 150);
+        panelRiego.add(chkAspersores);
 
         panelColumnas.add(panelLuces);
         panelColumnas.add(panelRiego);
-        panelColumnas.add(ColumnaSeguridad()); // 3. Seguridad
+        panelColumnas.add(ColumnaSeguridad());
 
         panelBase.add(panelColumnas, BorderLayout.CENTER);
         return panelBase;
@@ -210,62 +218,77 @@ public class Proyect extends javax.swing.JFrame {
 
         JPanel panelColumnas = new JPanel(new GridLayout(1, 3, 15, 0));
         panelColumnas.setBackground(new Color(204, 204, 204));
-        panelColumnas.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        //  Luces Sala
         JPanel panelLuces = new JPanel(new GridLayout(0, 1));
         panelLuces.setBackground(new Color(153, 153, 153));
         panelLuces.setBorder(BorderFactory.createTitledBorder("Luces Sala:"));
-        panelLuces.add(new JCheckBox("Luz Principal"));
-        panelLuces.add(new JCheckBox("Luces led"));
+        JCheckBox chkLuzPrincipal = new JCheckBox("Luz Principal");
+        configurarCheck(chkLuzPrincipal, 40);
+        panelLuces.add(chkLuzPrincipal);
 
-        // 2. tv y sonido
         JPanel panelExtra = new JPanel(new GridLayout(0, 1));
         panelExtra.setBackground(new Color(153, 153, 153));
         panelExtra.setBorder(BorderFactory.createTitledBorder("Multimedia:"));
-        panelExtra.add(new JCheckBox("Smart TV"));
-        panelExtra.add(new JCheckBox("Audio"));
+        JCheckBox chkSmartTV = new JCheckBox("Smart TV");
+        configurarCheck(chkSmartTV, 100);
+        panelExtra.add(chkSmartTV);
 
         panelColumnas.add(panelLuces);
         panelColumnas.add(panelExtra);
         panelColumnas.add(ColumnaSeguridad());
-
-        panelBase.add(panelColumnas, java.awt.BorderLayout.CENTER);
+        panelBase.add(panelColumnas, BorderLayout.CENTER);
         return panelBase;
     }
     
     /// MÉTODO DEL COMEDOR
-    private javax.swing.JPanel PanelComedor() {
+    private JPanel PanelComedor() {
         JPanel panelBase = new JPanel(new BorderLayout());
         panelBase.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.BLACK), "Comedor", 0, 2, new Font("Segoe UI", 1, 18)));
 
         JPanel panelColumnas = new JPanel(new GridLayout(1, 3, 15, 0));
         panelColumnas.setBackground(new Color(204, 204, 204));
-        panelColumnas.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // 1. Luces Comedor
+        // 1. Luces Comedor con Listeners
         JPanel panelLuces = new JPanel(new GridLayout(0, 1));
         panelLuces.setBackground(new Color(153, 153, 153));
         panelLuces.setBorder(BorderFactory.createTitledBorder("Luces Comedor:"));
-        panelLuces.add(new JCheckBox("Lampara de techo"));
-        panelLuces.add(new JCheckBox("Luces de vitrina "));
+        JCheckBox chkTecho = new JCheckBox("Lampara de techo");
+        JCheckBox chkVitrina = new JCheckBox("Luces de vitrina");
+        
+        configurarCheck(chkTecho, 45);
+        configurarCheck(chkVitrina, 20);
+        
+        panelLuces.add(chkTecho);
+        panelLuces.add(chkVitrina);
 
         // 2. Cortinas
         JPanel panelCortinas = new JPanel(new GridLayout(0, 1));
         panelCortinas.setBackground(new Color(153, 153, 153));
         panelCortinas.setBorder(BorderFactory.createTitledBorder("Cortinas Inteligentes:"));
-        ButtonGroup bgCortinas = new ButtonGroup();
         JRadioButton rbCerradas = new JRadioButton("Cerradas", true);
         JRadioButton rbAbiertas = new JRadioButton("Abiertas");
-        bgCortinas.add(rbCerradas); bgCortinas.add(rbAbiertas);
-        panelCortinas.add(rbCerradas); panelCortinas.add(rbAbiertas);
+        ButtonGroup bgCortinas = new ButtonGroup();
+        bgCortinas.add(rbCerradas);
+        bgCortinas.add(rbAbiertas);
+
+        rbAbiertas.addActionListener(e -> {
+            consumoActual += 20; // Motor activado
+            actualizarEnergia();
+        });
+        rbCerradas.addActionListener(e -> {
+            consumoActual -= 20; // Motor desactivado
+            actualizarEnergia();
+        });
+
+        panelCortinas.add(rbCerradas);
+        panelCortinas.add(rbAbiertas);
 
         panelColumnas.add(panelLuces);
         panelColumnas.add(panelCortinas);
-        panelColumnas.add(ColumnaSeguridad()); // 3. Seguridad
+        panelColumnas.add(ColumnaSeguridad());
 
-        panelBase.add(panelColumnas, java.awt.BorderLayout.CENTER);
+        panelBase.add(panelColumnas, BorderLayout.CENTER);
         return panelBase;
     }
     
@@ -294,6 +317,8 @@ public class Proyect extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -476,6 +501,8 @@ public class Proyect extends javax.swing.JFrame {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/camara1.png"))); // NOI18N
 
+        jLabel7.setText("jLabel7");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -487,10 +514,18 @@ public class Proyect extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(102, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabel7)
+                        .addGap(167, 167, 167))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -507,6 +542,10 @@ public class Proyect extends javax.swing.JFrame {
                         .addGap(21, 21, 21))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -556,7 +595,20 @@ public class Proyect extends javax.swing.JFrame {
         
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+    private void actualizarEnergia() {
+        if (consumoActual < 0) consumoActual = 0;
 
+        double costoMensual = sim.calcularCostoMensual(consumoActual);
+        String eficiencia = sim.obtenerEstadoEficiencia(consumoActual);
+
+        if(jLabel6 != null) {
+            jLabel6.setText("Consumo: " + consumoActual + " W");
+            jLabel6.setForeground(eficiencia.equals("ALTO") ? Color.RED : new Color(0, 102, 0));
+        }
+        if(jLabel7 != null) {
+            jLabel7.setText("Costo Est.: $" + String.format("%.2f", costoMensual) + " MXN");
+        }
+    }
     
     
     /**
@@ -573,6 +625,8 @@ public class Proyect extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
